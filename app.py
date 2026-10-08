@@ -14,16 +14,15 @@ app.secret_key = "chave-secreta-interclasse-2026"
 
 @app.route("/")
 def dashboard():
-    times = tabela_time.select_todos()
-    jogadores = tabela_jogador.select_todos()
-    partidas = tabela_partida.select_todos()
-
+    times = tabela_time.select_quantidade_total()
+    jogadores = tabela_jogador.select_quantidade_total()
+    partidas = tabela_partida.select_quantidade_total()
 
     return render_template(
         "dashboard.html",
-        total_jogadores=len(jogadores),
-        total_times=len(times),
-        total_partidas=len(partidas),
+        total_jogadores=jogadores,
+        total_times=times,
+        total_partidas=partidas,
     )
 
 
