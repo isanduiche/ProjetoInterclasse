@@ -17,7 +17,7 @@ def select_quantidade_total():
     jogadores_sql = select(func.count(Jogador.id))
     qtd_total = db_session.execute(jogadores_sql).scalar()
     return qtd_total
-print(select_quantidade_total())
+
 
 def salvar(nome, numero_camisa, posicao, time_id):
     try:
@@ -36,3 +36,14 @@ def salvar(nome, numero_camisa, posicao, time_id):
         print(f'Erro inesperado: {e}')
         flash('Erro inesperado!', 'error')
 
+def select_um(id_jogador):
+    jogadores_sql = select(Jogador).where(Jogador.id == id_jogador)
+    jogador = db_session.execute(jogadores_sql).scalar_one_or_none()
+    return jogador
+
+
+def select_por_time(id_time):
+    jogadores_sql = select(Jogador).where(Jogador.time_id == id_time)
+    jogadores = db_session.execute(jogadores_sql).scalars().all()
+    return jogadores
+print(select_por_time(6))

@@ -23,7 +23,6 @@ def select_quantidade_total():
     partidas_sql = select(func.count(Partida.id))
     qtd_total = db_session.execute(partidas_sql).scalar()
     return qtd_total
-print(select_quantidade_total())
 
 
 def salvar(time_casa_id, time_visitante_id, gols_casa, gols_visitante, data_partida):
@@ -42,3 +41,18 @@ def salvar(time_casa_id, time_visitante_id, gols_casa, gols_visitante, data_part
         db_session.rollback()
         print(f'Erro inesperado: {e}')
         flash('Erro inesperado!', 'error')
+
+
+def select_partida_por_time(id_time):
+    TimeCasa = aliased(Time)
+    TimeVisitante = aliased(Time)
+
+    partidas_sql = (
+        select(Partida, TimeCasa, TimeVisitante)
+        .join(TimeCasa, Partida.time_casa_id == TimeCasa.id)
+        .join(TimeVisitante, Partida.time_visitante_id == TimeVisitante.id)
+        .where(or_(Partida.time_casa_id == id_time, Partida.time_visitante_id == id_time))
+    )
+    partidas_time = db_session.execute(partidas_sql).all()
+    return partidas_time
+print(select_partida_por_time(3))

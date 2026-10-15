@@ -22,10 +22,10 @@ print(select_quantidade_total())
 def salvar(nome, turma, responsavel):
     try:
         novo_time = Time(nome=nome, turma=turma, responsavel=responsavel)
-
         db_session.add(novo_time)
         db_session.commit()
         flash('Time adicionado com sucesso!', 'success')
+        return novo_time
 
     except SQLAlchemyError as e:
         db_session.rollback()
@@ -35,3 +35,11 @@ def salvar(nome, turma, responsavel):
         db_session.rollback()
         print(f'Erro inesperado: {e}')
         flash('Erro inesperado!', 'error')
+
+
+def select_um(id_time):
+    times_sql = select(Time).where(Time.id == id_time)
+    time = db_session.execute(times_sql).scalar_one_or_none()
+    return time
+print(select_um(10))
+
