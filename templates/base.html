@@ -9,7 +9,7 @@
 <body>
 
     <div class="layout">
-
+        {% if current_user.id %}
         <!-- MENU VERTICAL -->
         <nav class="menu-lateral">
             <div class="menu-titulo">🏆 Interclasse</div>
@@ -44,9 +44,14 @@
                        <span class="icone">↩️</span> Movimentações
                     </a>
                 </li>
+                <li>
+                    <a href="{{ url_for('logout') }}"
+                       <span class="icone">🚪</span> Sair [{{ current_user.nome }}]
+                    </a>
+                </li>
             </ul>
         </nav>
-
+    {% endif %}
         <!-- CONTEÚDO -->
         <main class="conteudo">
             {% with mensagens = get_flashed_messages(with_categories=true) %}
